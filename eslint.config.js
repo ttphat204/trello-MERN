@@ -1,50 +1,65 @@
-// Updated by trungquandev.com's author on May 13 2023
-// Sample Eslint config for React project
-module.exports = {
-  env: { browser: true, es2020: true, node: true },
-  extends: [
-    "eslint:recommended",
-    "plugin:react/recommended",
-    "plugin:react/jsx-runtime",
-    "plugin:react-hooks/recommended",
-  ],
-  parserOptions: { ecmaVersion: "latest", sourceType: "module" },
-  settings: { react: { version: "18.2" } },
-  plugins: ["react", "react-hooks", "react-refresh"],
-  rules: {
-    //NOTE: React
-    "react-refresh/only-export-components": "warn",
-    "react-hooks/rules-of-hooks": "error",
-    "react-hooks/exhaustive-deps": "warn",
-    "react/prop-types": 0,
-    "react/display-name": 0,
+import globals from 'globals'
+import pluginJs from '@eslint/js'
+import pluginReact from 'eslint-plugin-react'
+import pluginReactRefresh from 'eslint-plugin-react-refresh' // Đảm bảo đã cài đặt
+import pluginReactHooks from 'eslint-plugin-react-hooks' // Thêm dòng này
 
-    //NOTE: MUI
-    "no-restricted-imports": [
-      "error",
-      {
-        patterns: ["@mui/*/*/*"],
-      },
-    ],
-
-    //NOTE: Common
-    "no-console": 1,
-    "no-lonely-if": 1,
-    "no-unused-vars": 1,
-    "no-trailing-spaces": 1,
-    "no-multi-spaces": 1,
-    "no-multiple-empty-lines": 1,
-    "space-before-blocks": ["error", "always"],
-    "object-curly-spacing": [1, "always"],
-    indent: ["warn", 2],
-    semi: [1, "never"],
-    quotes: ["error", "single"],
-    "array-bracket-spacing": 1,
-    "linebreak-style": 0,
-    "no-unexpected-multiline": "warn",
-    "keyword-spacing": 1,
-    "comma-dangle": 1,
-    "comma-spacing": 1,
-    "arrow-spacing": 1,
+export default [
+  {
+    files: ['**/*.{js,mjs,cjs,jsx}'],
   },
-};
+  {
+    languageOptions: {
+      globals: { ...globals.browser, ...globals.node },
+    },
+  },
+  pluginJs.configs.recommended,
+  pluginReact.configs.flat.recommended,
+  {
+    settings: {
+      react: {
+        version: 'detect', // Hoặc bạn có thể chỉ định phiên bản cụ thể, ví dụ: '18.0'
+      },
+    },
+    plugins: {
+      'react-refresh': pluginReactRefresh, // Định nghĩa plugin react-refresh
+      'react-hooks': pluginReactHooks, // Định nghĩa plugin react-hooks
+    },
+    rules: {
+      // NOTE: React
+      'react-refresh/only-export-components': 'warn',
+      'react-hooks/rules-of-hooks': 'error',
+      'react-hooks/exhaustive-deps': 'warn',
+      'react/prop-types': 'off', // Tắt quy tắc kiểm tra prop-types
+      'react/display-name': 'off', // Tắt quy tắc yêu cầu tên hiển thị cho component
+
+      // NOTE: MUI
+      'no-restricted-imports': [
+        'error',
+        {
+          patterns: ['@mui/*/*/*'],
+        },
+      ],
+
+      // NOTE: Common
+      'no-console': 'warn',
+      'no-lonely-if': 'warn',
+      'no-unused-vars': 'warn',
+      'no-trailing-spaces': 'warn',
+      'no-multi-spaces': 'warn',
+      'no-multiple-empty-lines': 'warn',
+      'space-before-blocks': ['error', 'always'],
+      'object-curly-spacing': ['warn', 'always'],
+      indent: ['warn', 2],
+      semi: ['warn', 'never'],
+      quotes: ['error', 'single'],
+      'array-bracket-spacing': 'warn',
+      'linebreak-style': ['error', 'windows'],
+      'no-unexpected-multiline': 'warn',
+      'keyword-spacing': 'warn',
+      'comma-dangle': ['warn', 'always-multiline'],
+      'comma-spacing': 'warn',
+      'arrow-spacing': 'warn',
+    },
+  },
+]
